@@ -1,18 +1,18 @@
 import React from 'react';
 import './App.css';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Router } from 'react-router-dom';
+import history from './history';
 import Landing from './pages/Landing';
-import { Provider } from 'react-redux';
+import Results from './pages/Results';
 
-function App({store} : any) {
+function App() {
   return (
-    <Provider store={store}>
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
         <Route exact path="/" component={Landing} />
+        <Route exact path="/jobs/:title" component={Results} />
       </Switch>
-    </BrowserRouter>
-    </Provider>
+    </Router>
   );
 }
 
