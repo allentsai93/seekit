@@ -17,6 +17,7 @@ const Container = styled.div`
   /* background-color: #292929;
   border-bottom: 5px solid #212121; */
   margin: 2px 0;
+  border-bottom: 1px solid #e8e8e8;
 `;
 
 const Content = styled.div`
@@ -27,7 +28,7 @@ const Content = styled.div`
   }
   a {
     margin-bottom: 5px;
-    color: #9cdccd;
+    color: #40648a;
     font-size: 1.4em;
     text-decoration: none;
     letter-spacing: 0.5px;
@@ -49,12 +50,15 @@ const Tags = styled.div`
 
 const Tag = styled.span`
   border-radius: 50px;
-  background-color: #a8d3ff;
+  background-color: #243546;
   height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 5px;
+  color: white;
+  padding: 10px;
+  font-size: 1.2em;
 `;
 
 interface IListing {
@@ -83,7 +87,9 @@ const Listing = ({
   return (
     <Container>
       <Content>
-        <a href={url}>{title}</a>
+        <a href={url} target="_blank">
+          {title}
+        </a>
         <h3>
           {company} - {city}, {state}
         </h3>

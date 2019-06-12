@@ -12,7 +12,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  background-color: #151515;
+  background-color: ${colours.section};
   ${colours.boxShadow}
   color: white;
 `;

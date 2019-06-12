@@ -35,6 +35,11 @@ const Content = styled.section`
   justify-content: flex-start;
   max-width: 100%;
   margin: 20px 0;
+
+  & > p {
+    margin: 0;
+    padding: 0 10px;
+  }
 `;
 
 const Results = () => {
@@ -58,10 +63,18 @@ const Results = () => {
         ))
       : null;
 
+  const currCount =
+    currState.status && currState.status === "success"
+      ? currState.results.count
+      : null;
+
   return (
     <Container>
       <SideBar />
-      <Content>{results}</Content>
+      <Content>
+        <p>Found {currCount} listings</p>
+        {results}
+      </Content>
     </Container>
   );
 };
