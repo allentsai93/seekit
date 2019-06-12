@@ -1,9 +1,9 @@
-import React from 'react';
-import './App.css';
-import { Switch, Route, Router } from 'react-router-dom';
-import history from './history';
-import Landing from './pages/Landing';
-import Results from './pages/Results';
+import React from "react";
+import "./App.css";
+import { Switch, Route, Router } from "react-router-dom";
+import history from "./history";
+import Landing from "./pages/Landing";
+import Results from "./pages/Results";
 
 function App() {
   return (
