@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import Tag from "./Tag";
 
 const Container = styled.div`
   display: flex;
@@ -17,7 +18,8 @@ const Container = styled.div`
   /* background-color: #292929;
   border-bottom: 5px solid #212121; */
   margin: 2px 0;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 3px solid #2d2d2d;
+  border-radius: 4px;
 `;
 
 const Content = styled.div`
@@ -28,15 +30,16 @@ const Content = styled.div`
   }
   a {
     margin: 5px 0;
-    color: #40648a;
+    color: #ffffff;
     font-size: 1.3em;
+    font-weight: bold;
     text-decoration: none;
   }
   & > h3 {
     font-weight: bold;
     text-transform: uppercase;
     font-size: 0.9em;
-
+    color: #777777;
     & > span {
       text-transform: initial;
       font-weight: normal;
@@ -45,7 +48,9 @@ const Content = styled.div`
   flex: 70%;
 `;
 
-const Description = styled.div``;
+const Description = styled.div`
+  color: #717171;
+`;
 
 const Tags = styled.div`
   flex: 30%;
@@ -53,19 +58,6 @@ const Tags = styled.div`
   flex-flow: row wrap;
   justify-content: flex-end;
   align-items: center;
-`;
-
-const Tag = styled.span`
-  background-color: #243546;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  color: white;
-  padding: 10px;
-  font-size: 0.9em;
-  margin: 2px;
 `;
 
 interface IListing {
@@ -100,7 +92,7 @@ const Listing = ({
             - {city}, {state}
           </span>
         </h3>
-        <a href={url} target="_blank">
+        <a href={url} rel="noopener noreferrer" target="_blank">
           {title}
         </a>
         {/* <p>Posted on {post_date}</p> */}
@@ -110,7 +102,7 @@ const Listing = ({
       </Content>
       <Tags>
         {tags.map((tag, i) => (
-          <Tag key={i}>{tag}</Tag>
+          <Tag key={i} tag={tag} />
         ))}
       </Tags>
     </Container>

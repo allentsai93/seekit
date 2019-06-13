@@ -12,9 +12,17 @@ const SearchBox = (props: any) => {
   React.useEffect(() => {
     const queryString = props.location.search;
     const queryParams = qs.parse(queryString);
-    dispatch(setSearchInput(queryParams.q));
-    dispatch(getSearchResults());
-  }, [props.location.search]);
+    let cleanedStr;
+    if (queryParams.q) {
+      cleanedStr = queryParams.q.split(" ").join(",");
+      dispatch(setSearchInput(queryParams.q));
+    } else {
+      cleanedStr = "";
+      dispatch(setSearchInput(""));
+    }
+
+    dispatch(getSearchResults(cleanedStr));
+  }, [props.location.search, dispatch]);
 
   return (
     <div className={props.className}>
@@ -26,13 +34,13 @@ const SearchBox = (props: any) => {
           }
           const queryString = props.location.search;
           const queryParams = qs.parse(queryString);
-          const query = input.value.split(" ").join("+") || queryParams.q;
+          const query = input.value.split(" ").join("") || queryParams.q;
           props.history.push(`/jobs?q=${query}`);
         }}
       >
         <input ref={node => (input = node)} />
         <button type="submit">
-          <img src={searchIcon} />
+          <img src={searchIcon} alt="search" />
         </button>
       </form>
     </div>

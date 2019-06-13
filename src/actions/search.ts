@@ -25,10 +25,10 @@ export const invalidSearch = () => {
   };
 };
 
-export const getSearchResults = () => {
+export const getSearchResults = (query: string) => {
   return async (dispatch: ThunkDispatch<{}, void, Action>, getState: any) => {
     dispatch(requestSearchResults());
-    return fetch(`http://localhost:8000/api/jobs/`)
+    return fetch(`http://localhost:8000/api/jobs/?tags=${query}`)
       .then(res => res.json())
       .then(json => dispatch(receivedSearchResults(json)));
   };
