@@ -104,7 +104,7 @@ const SideBar = () => {
         </TextContent>
         <Navigation>
           <StyledLink to={"/jobs"}>Jobs</StyledLink>
-          <StyledLink to={"/jobs"}>List</StyledLink>
+          <StyledLink to={"/jobs"}>Watchlist</StyledLink>
           <StyledLink to={"/jobs"}>About</StyledLink>
         </Navigation>
         <StyledSearch />
