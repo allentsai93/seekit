@@ -2,6 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { setSearchInput, getSearchResults } from "../actions/search";
+import searchIcon from "../assets/outline-search-24px.svg";
 const qs = require("query-string");
 
 const SearchBox = (props: any) => {
@@ -30,7 +31,9 @@ const SearchBox = (props: any) => {
         }}
       >
         <input ref={node => (input = node)} />
-        <button type="submit">Search</button>
+        <button type="submit">
+          <img src={searchIcon} />
+        </button>
       </form>
     </div>
   );

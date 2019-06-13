@@ -4,6 +4,7 @@ import colours from "../colours";
 import styled from "styled-components";
 import SideBar from "../components/SideBar";
 import Listing from "../components/Listing";
+import FilterBox from "../components/FilterBox";
 interface IListing {
   city: string;
   company: string;
@@ -31,11 +32,13 @@ const Content = styled.section`
   display: flex;
   flex-flow: column wrap;
   height: 100%;
-  width: 90vw;
+  width: auto;
   justify-content: flex-start;
   max-width: 100%;
-  margin: 20px 0;
-
+  margin: 20px 0 0;
+  background-color: #fff;
+  ${colours.boxShadow}
+  border-radius: 3px;
   & > p {
     margin: 0;
     padding: 0 10px;
@@ -72,9 +75,9 @@ const Results = () => {
     <Container>
       <SideBar />
       <Content>
-        <p>Found {currCount} listings</p>
-        {results}
+        <FilterBox count={currCount} input={currState.searchInput} />
       </Content>
+      <Content>{results}</Content>
     </Container>
   );
 };

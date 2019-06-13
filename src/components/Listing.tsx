@@ -27,29 +27,35 @@ const Content = styled.div`
     margin: 0;
   }
   a {
-    margin-bottom: 5px;
+    margin: 5px 0;
     color: #40648a;
-    font-size: 1.4em;
+    font-size: 1.3em;
     text-decoration: none;
-    letter-spacing: 0.5px;
+  }
+  & > h3 {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+
+    & > span {
+      text-transform: initial;
+      font-weight: normal;
+    }
   }
   flex: 70%;
 `;
 
-const Description = styled.div`
-  margin: 5px 0;
-`;
+const Description = styled.div``;
 
 const Tags = styled.div`
   flex: 30%;
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: flex-end;
   align-items: center;
 `;
 
 const Tag = styled.span`
-  border-radius: 50px;
   background-color: #243546;
   height: auto;
   display: flex;
@@ -58,7 +64,8 @@ const Tag = styled.span`
   padding: 5px;
   color: white;
   padding: 10px;
-  font-size: 1.2em;
+  font-size: 0.9em;
+  margin: 2px;
 `;
 
 interface IListing {
@@ -87,13 +94,16 @@ const Listing = ({
   return (
     <Container>
       <Content>
+        <h3>
+          {company}{" "}
+          <span>
+            - {city}, {state}
+          </span>
+        </h3>
         <a href={url} target="_blank">
           {title}
         </a>
-        <h3>
-          {company} - {city}, {state}
-        </h3>
-        <p>Posted on {post_date}</p>
+        {/* <p>Posted on {post_date}</p> */}
         <Description>
           <p>{description}</p>
         </Description>
