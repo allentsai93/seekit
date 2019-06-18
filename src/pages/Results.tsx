@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Listing from "../components/Listing";
 import FilterBox from "../components/FilterBox";
 import Layout from "../components/Layout";
+import ReactPaginate from "react-paginate";
 interface IListing {
   city: string;
   company: string;
@@ -36,6 +37,33 @@ const Content = styled.section`
   }
 `;
 
+const Pagination = styled.div`
+  & ul {
+    display: flex;
+    flex-flow: row wrap;
+    list-style: none;
+    justify-content: space-evenly;
+    padding: 0 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+  }
+  .disabled,
+  .selected {
+    color: #615f5f;
+  }
+  & li {
+    cursor: pointer;
+  }
+`;
+
+const Count = styled.span`
+  padding: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8em;
+`;
+
 const Results = () => {
   const currState = useSelector((state: any) => state.search);
 
@@ -61,6 +89,10 @@ const Results = () => {
     currState.status && currState.status === "success"
       ? currState.results.count
       : null;
+  const currNumPages =
+    currState.status && currState.status === "success"
+      ? currState.results.numpages
+      : 0;
 
   return (
     <Layout>
@@ -69,7 +101,17 @@ const Results = () => {
           <FilterBox count={currCount} input={currState.searchInput} />
         </Content>
       ) : null}
-      <Content>{results}</Content>
+      <Content>
+        <Count>Found {currCount} result(s)</Count>
+        {results}
+        <Pagination>
+          <ReactPaginate
+            pageCount={currNumPages}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={5}
+          />
+        </Pagination>
+      </Content>
     </Layout>
   );
 };
