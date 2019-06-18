@@ -16,11 +16,11 @@ const Container = styled.div`
   color: ${colours.fc};
 `;
 
-const Layout = (props: any) => {
+const Layout = ({ children }: any) => {
   return (
     <Container>
       <NavBar />
-      {props.children}
+      {children}
       <Footer />
     </Container>
   );

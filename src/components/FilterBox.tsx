@@ -21,7 +21,12 @@ const Container = styled.div`
   }
 `;
 
-const FilterBox = ({ count, input }: any) => {
+interface FilterBoxProps {
+  count: number;
+  input: string;
+}
+
+const FilterBox = ({ count, input }: FilterBoxProps) => {
   return (
     <Container>
       <p>
