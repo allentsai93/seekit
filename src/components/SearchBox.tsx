@@ -40,7 +40,7 @@ const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
           const queryString = props.location.search;
           const queryParams = qs.parse(queryString);
           const query = input.value.split(" ").join("+") || queryParams.q;
-          props.history.push(`/jobs?q=${query}`);
+          dispatch(() => props.history.push(`/jobs?q=${query}`));
         }}
       >
         <input ref={node => (input = node)} />
