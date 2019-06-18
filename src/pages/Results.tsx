@@ -36,8 +36,13 @@ const Content = styled.section`
     padding: 0 10px;
   }
 `;
+interface PaginationProps {
+  pageCount: number;
+}
 
-const Pagination = styled.div`
+const Pagination = styled.div<PaginationProps>`
+  display: ${p => (p.pageCount === 1 ? "none" : "block")};
+
   & ul {
     display: flex;
     flex-flow: row wrap;
@@ -94,6 +99,12 @@ const Results = () => {
       ? currState.results.numpages
       : 0;
 
+  const pageChangeHandler = ({ selected }: { selected: number }) => {
+    const pageNum = selected + 1;
+    const query = `?tags=${currState.searchInput}&page=${pageNum}`;
+    console.log(query);
+  };
+
   return (
     <Layout>
       {currState.searchInput ? (
@@ -102,13 +113,14 @@ const Results = () => {
         </Content>
       ) : null}
       <Content>
-        <Count>Found {currCount} result(s)</Count>
+        <Count>Found {currCount} job posts(s)</Count>
         {results}
-        <Pagination>
+        <Pagination pageCount={currNumPages}>
           <ReactPaginate
             pageCount={currNumPages}
             marginPagesDisplayed={1}
             pageRangeDisplayed={5}
+            onPageChange={pageChangeHandler}
           />
         </Pagination>
       </Content>

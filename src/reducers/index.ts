@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import search from "./search";
-import visited from "./visited";
+import searchReducer from "./search";
+import visitedReducer from "./visited";
 
 export default combineReducers({
-  search,
-  visited
+  search: searchReducer,
+  visited: visitedReducer
 });

@@ -15,13 +15,13 @@ const SearchBox = (props: any) => {
     let cleanedStr;
     if (queryParams.q) {
       cleanedStr = queryParams.q.split(" ").join(",");
-      dispatch(setSearchInput(queryParams.q));
+      dispatch(setSearchInput(cleanedStr));
     } else {
       cleanedStr = "";
       dispatch(setSearchInput(""));
     }
 
-    dispatch(getSearchResults(cleanedStr));
+    dispatch(getSearchResults(cleanedStr || input.value));
   }, [props.location.search, dispatch]);
 
   return (
@@ -34,7 +34,7 @@ const SearchBox = (props: any) => {
           }
           const queryString = props.location.search;
           const queryParams = qs.parse(queryString);
-          const query = input.value.split(" ").join("") || queryParams.q;
+          const query = input.value.split(" ").join("+") || queryParams.q;
           props.history.push(`/jobs?q=${query}`);
         }}
       >

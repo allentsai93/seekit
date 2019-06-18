@@ -1,7 +1,15 @@
-const visited = (state: any = [], action: any) => {
+import { VisitedState } from "./types";
+
+const initialState: VisitedState = {
+  visited: []
+};
+
+const visitedReducer = (state = initialState, action: any): VisitedState => {
   switch (action.type) {
-    case "VISITED_LISTING":
-      return [...state, action.payload];
+    case "ADD_VISITED":
+      return {
+        visited: [...state.visited, action.payload]
+      };
     case "SHOW_VISITED":
       return state;
     default:
@@ -9,4 +17,4 @@ const visited = (state: any = [], action: any) => {
   }
 };
 
-export default visited;
+export default visitedReducer;

@@ -1,5 +1,19 @@
-const search = (state = {}, action: any) => {
+import { SearchState } from "./types";
+
+const initialState: SearchState = {
+  searchInput: "",
+  tags: [],
+  status: "",
+  results: {}
+};
+
+const searchReducer = (state = initialState, action: any): SearchState => {
   switch (action.type) {
+    case "ADD_ADDITIONAL_TAG":
+      return {
+        tags: [...state.tags, action.payload],
+        ...state
+      };
     case "SET_SEARCH_INPUT":
       return {
         ...state,
@@ -23,4 +37,4 @@ const search = (state = {}, action: any) => {
   }
 };
 
-export default search;
+export default searchReducer;

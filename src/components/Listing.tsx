@@ -92,7 +92,7 @@ const Listing = ({
             - {city}, {state}
           </span>
         </h3>
-        <a href={url} rel="noopener noreferrer" target="_blank">
+        <a href={`https://${url}`} rel="noopener noreferrer" target="_blank">
           {title}
         </a>
         {/* <p>Posted on {post_date}</p> */}
