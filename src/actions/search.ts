@@ -30,8 +30,8 @@ export const getSearchResults = (query: string) => {
     dispatch(requestSearchResults());
     return fetch(
       `${
-        process.env.REACT_APP_API_URL
-          ? process.env.REACT_APP_API_URL
+        process.env.NODE_ENV === "production"
+          ? "https://hbtojv86ij.execute-api.us-east-1.amazonaws.com/dev/api/jobs/?tags="
           : "http://localhost:8000/api/jobs/?tags="
       }${query}`
     )
