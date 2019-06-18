@@ -1,11 +1,16 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { setSearchInput, getSearchResults } from "../actions/search";
+import { setSearchInput, getSearchResults } from "../store/actions/search";
 import searchIcon from "../assets/outline-search-24px.svg";
+import { RouteChildrenProps } from "react-router";
 const qs = require("query-string");
 
-const SearchBox = (props: any) => {
+interface SearchBoxProps {
+  className?: string;
+}
+
+const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
   let input: any;
   const dispatch = useDispatch();
 
