@@ -5,7 +5,7 @@ export const FETCH_SEARCH_SUCCESS = "FETCH_SEARCH_SUCCESS";
 export const FETCH_SEARCH_FAILURE = "FETCH_SEARCH_FAILURE";
 export const ADD_TAG = "ADD_TAG";
 export const REMOVE_TAG = "REMOVE_TAG";
-
+export const CLEAR_TAGS = "CLEAR_TAGS";
 interface InvalidSearchAction {
   type: typeof FETCH_SEARCH_FAILURE;
 }
@@ -34,7 +34,12 @@ interface RemoveTagAction {
   payload: string;
 }
 
+interface ClearTagsAction {
+  type: typeof CLEAR_TAGS;
+}
+
 export type SearchActionTypes =
+  | ClearTagsAction
   | AddTagAction
   | RemoveTagAction
   | InvalidSearchAction

@@ -21,6 +21,11 @@ const searchReducer = (state = initialState, action: any): SearchState => {
         ...state,
         tags: newTagState
       };
+    case "CLEAR_TAGS":
+      return {
+        ...state,
+        tags: []
+      };
     case "SET_SEARCH_INPUT":
       return {
         ...state,

@@ -1,7 +1,11 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { setSearchInput, getSearchResults } from "../store/actions/search";
+import {
+  setSearchInput,
+  getSearchResults,
+  clearTags
+} from "../store/actions/search";
 import searchIcon from "../assets/outline-search-24px.svg";
 import { RouteChildrenProps } from "react-router";
 const qs = require("query-string");
@@ -40,6 +44,7 @@ const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
           const queryString = props.location.search;
           const queryParams = qs.parse(queryString);
           const query = input.value.split(" ").join("+") || queryParams.q;
+          dispatch(clearTags());
           dispatch(() => props.history.push(`/jobs?q=${query}`));
         }}
       >

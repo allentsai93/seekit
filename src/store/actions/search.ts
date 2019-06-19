@@ -8,6 +8,7 @@ import {
   FETCH_SEARCH_SUCCESS,
   ADD_TAG,
   REMOVE_TAG,
+  CLEAR_TAGS,
   SearchActionTypes
 } from "./searchTypes";
 
@@ -19,6 +20,10 @@ export const addTag = (tag: string): SearchActionTypes => ({
 export const removeTag = (tag: string): SearchActionTypes => ({
   type: REMOVE_TAG,
   payload: tag
+});
+
+export const clearTags = (): SearchActionTypes => ({
+  type: CLEAR_TAGS
 });
 
 export const setSearchInput = (text: string): SearchActionTypes => ({
