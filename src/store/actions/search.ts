@@ -6,8 +6,20 @@ import {
   FETCH_SEARCH_FAILURE,
   FETCH_SEARCH_REQUEST,
   FETCH_SEARCH_SUCCESS,
+  ADD_TAG,
+  REMOVE_TAG,
   SearchActionTypes
 } from "./searchTypes";
+
+export const addTag = (tag: string): SearchActionTypes => ({
+  type: ADD_TAG,
+  payload: tag
+});
+
+export const removeTag = (tag: string): SearchActionTypes => ({
+  type: REMOVE_TAG,
+  payload: tag
+});
 
 export const setSearchInput = (text: string): SearchActionTypes => ({
   type: SET_SEARCH_INPUT,
