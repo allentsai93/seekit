@@ -11,15 +11,15 @@ const searchReducer = (state = initialState, action: any): SearchState => {
   switch (action.type) {
     case "ADD_TAG":
       return {
-        tags: [...state.tags, action.payload],
-        ...state
+        ...state,
+        tags: [...state.tags, action.payload]
       };
     case "REMOVE_TAG":
       let newTagState = [...state.tags];
       newTagState.splice(newTagState.indexOf(action.payload), 1);
       return {
-        tags: newTagState,
-        ...state
+        ...state,
+        tags: newTagState
       };
     case "SET_SEARCH_INPUT":
       return {

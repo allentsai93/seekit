@@ -107,7 +107,7 @@ const Results = () => {
 
   return (
     <Layout>
-      {currState.searchInput ? (
+      {currCount ? (
         <Content>
           <FilterBox count={currCount} input={currState.searchInput} />
         </Content>

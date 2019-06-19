@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import Tag from "./Tag";
+import { addTag } from "../store/actions/search";
 
 const Container = styled.div`
   display: flex;
@@ -102,7 +103,7 @@ const Listing = ({
       </Content>
       <Tags>
         {tags.map((tag, i) => (
-          <Tag key={i} tag={tag} />
+          <Tag key={i} tag={tag} clickHandler={addTag} fromFilterBox={false} />
         ))}
       </Tags>
     </Container>
