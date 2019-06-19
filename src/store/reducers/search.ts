@@ -9,7 +9,7 @@ const initialState: SearchState = {
 
 const searchReducer = (state = initialState, action: any): SearchState => {
   switch (action.type) {
-    case "ADD_ADDITIONAL_TAG":
+    case "ADD_TAG":
       return {
         tags: [...state.tags, action.payload],
         ...state
