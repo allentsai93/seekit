@@ -1,9 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import colours from "../colours";
 import SearchBox from "./SearchBox";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -13,9 +11,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  color: black;
-  border-bottom: 1px solid #efefef;
-  background-color: white;
+  color: white;
+  padding-top: 10px;
 `;
 const TextContent = styled.div`
   display: flex;
@@ -41,9 +38,15 @@ const Navigation = styled.div`
   align-items: center;
   flex-flow: row wrap;
 `;
+const HeadLink = styled(Link)`
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 2em;
+`;
 
 const StyledLink = styled(Link)`
-  color: #76707f;
+  color: #dedede;
   text-decoration: none;
   font-weight: bold;
   text-transform: uppercase;
@@ -58,31 +61,23 @@ const StyledSearch = styled(SearchBox)`
   max-width: 70vw;
   & form {
     display: flex;
-    border: 0.3px solid #e0e0e0;
+    border: 2px solid #fff;
     border-radius: 50px;
     overflow: hidden;
     height: 40px;
-    background: #d3cce3; /* fallback for old browsers */
-    background: -webkit-linear-gradient(
-      to right,
-      #e9e4f0,
-      #d3cce3
-    ); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(
-      to right,
-      #e9e4f0,
-      #d3cce3
-    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-sizing: border-box;
+    background: none;
   }
 
   & input {
     width: 300px;
     border: none;
-    padding: 10px;
+    padding: 10px 20px;
+    box-sizing: border-box;
     font-size: 1em;
     background: none;
-    color: black;
-    font-weight: lighter;
+    color: white;
+    font-weight: bold;
   }
 
   & button {
@@ -90,21 +85,24 @@ const StyledSearch = styled(SearchBox)`
     font-size: 0.8em;
     background: none;
     color: black;
+    display: flex;
+    justify-content: center;
     font-weight: bold;
     text-transform: uppercase;
+    align-items: center;
   }
 `;
 
-const SideBar = () => {
+const SideBar = (props: RouteComponentProps) => {
   return (
     <Container>
       <Content>
         <TextContent>
-          <h1>Joblert</h1>
+          <HeadLink to={"/jobs"}>Joblert</HeadLink>
         </TextContent>
         <Navigation>
           <StyledLink to={"/jobs"}>Jobs</StyledLink>
-          <StyledLink to={"/jobs"}>Watchlist</StyledLink>
+          <StyledLink to={"/saved"}>Saved</StyledLink>
           <StyledLink to={"/jobs"}>About</StyledLink>
         </Navigation>
         <StyledSearch />
@@ -113,4 +111,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default withRouter(SideBar);

@@ -2,9 +2,10 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import colours from "../colours";
 import styled from "styled-components";
-import SideBar from "../components/SideBar";
 import Listing from "../components/Listing";
 import FilterBox from "../components/FilterBox";
+import Layout from "../components/Layout";
+import ReactPaginate from "react-paginate";
 interface IListing {
   city: string;
   company: string;
@@ -16,17 +17,6 @@ interface IListing {
   tags: [];
   url: string;
 }
-const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  height: auto;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-flow: column wrap;
-  background-color: ${colours.bg};
-  color: ${colours.fc};
-`;
 
 const Content = styled.section`
   display: flex;
@@ -34,15 +24,49 @@ const Content = styled.section`
   height: 100%;
   width: auto;
   justify-content: flex-start;
-  max-width: 100%;
+  max-width: 95%;
   margin: 20px 0 0;
-  background-color: #fff;
+  background-color: #212121;
   ${colours.boxShadow}
-  border-radius: 3px;
+  border-radius: 15px;
+  padding: 10px;
+  box-sizing: border-box;
   & > p {
     margin: 0;
     padding: 0 10px;
   }
+`;
+interface PaginationProps {
+  pageCount: number;
+}
+
+const Pagination = styled.div<PaginationProps>`
+  display: ${p => (p.pageCount === 1 ? "none" : "block")};
+
+  & ul {
+    display: flex;
+    flex-flow: row wrap;
+    list-style: none;
+    justify-content: space-evenly;
+    padding: 0 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+  }
+  .disabled,
+  .selected {
+    color: #615f5f;
+  }
+  & li {
+    cursor: pointer;
+  }
+`;
+
+const Count = styled.span`
+  padding: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8em;
 `;
 
 const Results = () => {
@@ -70,15 +94,37 @@ const Results = () => {
     currState.status && currState.status === "success"
       ? currState.results.count
       : null;
+  const currNumPages =
+    currState.status && currState.status === "success"
+      ? currState.results.numpages
+      : 0;
+
+  const pageChangeHandler = ({ selected }: { selected: number }) => {
+    const pageNum = selected + 1;
+    const query = `?tags=${currState.searchInput}&page=${pageNum}`;
+    console.log(query);
+  };
 
   return (
-    <Container>
-      <SideBar />
+    <Layout>
+      {currCount ? (
+        <Content>
+          <FilterBox count={currCount} input={currState.searchInput} />
+        </Content>
+      ) : null}
       <Content>
-        <FilterBox count={currCount} input={currState.searchInput} />
+        <Count>Found {currCount} job posts(s)</Count>
+        {results}
+        <Pagination pageCount={currNumPages}>
+          <ReactPaginate
+            pageCount={currNumPages}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={5}
+            onPageChange={pageChangeHandler}
+          />
+        </Pagination>
       </Content>
-      <Content>{results}</Content>
-    </Container>
+    </Layout>
   );
 };
 

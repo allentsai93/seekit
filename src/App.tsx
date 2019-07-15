@@ -1,13 +1,13 @@
 import React from "react";
 import "./App.css";
-import { Route, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter, Redirect } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Results from "./pages/Results";
 
 function App() {
   return (
     <BrowserRouter>
-      <Route exact path="/" component={Landing} />
+      <Redirect exact from="/" to="/jobs" />
       <Route exact path="/jobs" component={Results} />
     </BrowserRouter>
   );

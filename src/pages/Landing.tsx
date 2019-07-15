@@ -10,7 +10,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-flow: column wrap;
-  background-color: ${colours.bg};
+  ${colours.gradientBg};
   color: ${colours.fc};
 `;
 
@@ -19,20 +19,26 @@ const Section = styled.section`
   flex-flow: column wrap;
   align-items: center;
   padding: 20px;
-  background-color: ${colours.section};
-  border-radius: 5px;
-  ${colours.boxShadow}
-  border-bottom: 8px solid #212121;
+  max-width: 100%;
+  box-sizing: border-box;
+  & h1 {
+    font-size: 3em;
+  }
+  & * {
+    margin: 0;
+  }
 `;
 
 const StyledSearchBox = styled(SearchBox)`
   display: flex;
-
+  max-width: 100%;
   & form {
     display: flex;
+    max-width: 100%;
   }
 
   & input {
+    max-width: 100%;
     width: 300px;
     border-radius: 7px;
     border-top-right-radius: 0;
@@ -58,11 +64,28 @@ const StyledSearchBox = styled(SearchBox)`
   }
 `;
 
+const Content = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-flow: column wrap;
+  width: 373px;
+  max-width: 100%;
+  margin-bottom: 30px;
+`;
+
 const Landing = () => {
   return (
     <Container>
       <Section>
-        <h1>Landing Page</h1>
+        <Content>
+          <h1>Joblert</h1>
+          <h2>
+            A job search engine that allows you to look across all job boards in
+            one place
+          </h2>
+        </Content>
+
         <StyledSearchBox />
       </Section>
     </Container>
