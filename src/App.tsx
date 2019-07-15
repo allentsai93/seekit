@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <Redirect exact from="/" to="/jobs" />
-      <Route exact path="/jobs" component={Results} />
+      <Route path="/jobs" component={Results} />
     </BrowserRouter>
   );
 }

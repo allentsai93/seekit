@@ -1,37 +1,16 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { withRouter } from "react-router-dom";
-import {
-  setSearchInput,
-  getSearchResults,
-  clearTags
-} from "../store/actions/search";
-import searchIcon from "../assets/outline-search-24px.svg";
 import { RouteChildrenProps } from "react-router";
-const qs = require("query-string");
+import { setSearchInput, clearTags } from "../store/actions/search";
+import searchIcon from "../assets/outline-search-24px.svg";
 
 interface SearchBoxProps {
   className?: string;
 }
 
-const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
+const SearchBox = (props: SearchBoxProps) => {
   let input: any;
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    const queryString = props.location.search;
-    const queryParams = qs.parse(queryString);
-    let cleanedStr;
-    if (queryParams.q) {
-      cleanedStr = queryParams.q.split(" ").join(",");
-      dispatch(setSearchInput(cleanedStr));
-    } else {
-      cleanedStr = "";
-      dispatch(setSearchInput(""));
-    }
-
-    dispatch(getSearchResults(cleanedStr || input.value));
-  }, [props.location.search, dispatch]);
 
   return (
     <div className={props.className}>
@@ -41,11 +20,9 @@ const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
           if (!input.value.trim()) {
             return;
           }
-          const queryString = props.location.search;
-          const queryParams = qs.parse(queryString);
-          const query = input.value.split(" ").join("+") || queryParams.q;
+          const query = input.value.split(" ").join(",");
           dispatch(clearTags());
-          dispatch(() => props.history.push(`/jobs?q=${query}`));
+          dispatch(setSearchInput(query));
         }}
       >
         <input ref={node => (input = node)} />
@@ -57,4 +34,4 @@ const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
   );
 };
 
-export default withRouter(SearchBox);
+export default SearchBox;

@@ -2,13 +2,8 @@ import * as React from "react";
 import styled from "styled-components";
 import { AppState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
-import { removeTag } from "../store/actions/search";
+import { removeTag, clearTags } from "../store/actions/search";
 import Tag from "./Tag";
-
-interface FilterBoxProps {
-  count: number;
-  input: string;
-}
 
 const Container = styled.div`
   width: 1300px;
@@ -37,21 +32,27 @@ const TagContainer = styled.div`
   margin: 5px 0;
 `;
 
-const FilterBox = ({ count, input }: FilterBoxProps) => {
+const FilterBox = () => {
   const dispatch = useDispatch();
-  const tags = useSelector((state: AppState) => state.search.tags);
+  const state = useSelector((state: AppState) => state.search);
 
-  const tagList = tags.map((tag, i) => (
+  const tagList = state.tags.map((tag, i) => (
     <Tag key={i} clickHandler={removeTag} tag={tag} fromFilterBox={true} />
   ));
 
   return (
     <Container>
       <p>
-        Filter down your search {input ? `for ${input}` : ""} by clicking on
+        Filter down your search{" "}
+        {state.searchInput ? `for ${state.searchInput}` : ""} by clicking on
         tags
       </p>
       <TagContainer>{tagList}</TagContainer>
+      {tagList.length > 0 ? (
+        <>
+          <span onClick={() => dispatch(clearTags())}>Clear Tags</span>
+        </>
+      ) : null}
     </Container>
   );
 };

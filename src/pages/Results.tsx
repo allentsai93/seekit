@@ -1,11 +1,14 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import colours from "../colours";
 import styled from "styled-components";
 import Listing from "../components/Listing";
 import FilterBox from "../components/FilterBox";
 import Layout from "../components/Layout";
 import ReactPaginate from "react-paginate";
+import { withRouter } from "react-router-dom";
+import { getSearchResults } from "../store/actions/search";
+import { RouteChildrenProps } from "react-router";
 interface IListing {
   city: string;
   company: string;
@@ -69,8 +72,14 @@ const Count = styled.span`
   font-size: 0.8em;
 `;
 
-const Results = () => {
+const Results = (props: RouteChildrenProps) => {
   const currState = useSelector((state: any) => state.search);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(getSearchResults(props));
+    console.log(currState);
+  }, [dispatch, currState.searchInput, currState.tags]);
 
   const results =
     currState.status && currState.status === "success"
@@ -109,7 +118,7 @@ const Results = () => {
     <Layout>
       {currCount ? (
         <Content>
-          <FilterBox count={currCount} input={currState.searchInput} />
+          <FilterBox />
         </Content>
       ) : null}
       <Content>
@@ -128,4 +137,4 @@ const Results = () => {
   );
 };
 
-export default Results;
+export default withRouter(Results);
