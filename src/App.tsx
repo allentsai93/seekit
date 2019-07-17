@@ -13,7 +13,7 @@ function App({ store }: any) {
       <ConnectedRouter history={history}>
         <>
           <Switch>
-            {/* <Redirect exact from="/" to="/jobs" /> */}
+            <Route exact path="/" render={() => <Landing />} />
             <Route
               exact
               path={"/jobs"}
