@@ -11,7 +11,6 @@ import {
   CLEAR_TAGS,
   SearchActionTypes
 } from "./searchTypes";
-const qs = require("query-string");
 
 export const addTag = (tag: string): SearchActionTypes => ({
   type: ADD_TAG,
@@ -52,31 +51,16 @@ export const invalidSearch = (): SearchActionTypes => {
 };
 
 export const getSearchResults = (
-  route?: any
+  query: string
 ): ThunkAction<void, AppState, null, Action<string>> => {
   return async (dispatch, getState) => {
-    let query = "";
-    const { history, location } = route;
-    const queryString = location.search;
-    const queryParams = qs.parse(queryString);
+    // const { search: currentState } = getState();
 
-    const { search: currentState } = getState();
-
-    if (queryParams.q && !currentState.searchInput) {
-      query = queryParams.q;
-    } else {
-      query = currentState.searchInput;
-    }
-
-    if (currentState.tags.length > 0) {
-      query =
-        currentState.tags.join(",") +
-        (currentState.searchInput ? "," + currentState.searchInput : "");
-    } else {
-      if (!currentState.searchInput) {
-        query = "";
-      }
-    }
+    // if (currentState.tags.length > 0) {
+    //   query +=
+    //     currentState.tags.join(",") +
+    //     (currentState.searchInput ? "," + currentState.searchInput : "");
+    // }
 
     dispatch(requestSearchResults());
     const response = await fetch(
@@ -87,7 +71,6 @@ export const getSearchResults = (
       }${query}`
     );
     const data = await response.json();
-    history.push(`/jobs${query ? "?q=" + query : ""}`);
-    return dispatch(receivedSearchResults(data));
+    dispatch(receivedSearchResults(data));
   };
 };

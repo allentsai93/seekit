@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import colours from "../colours";
 import styled from "styled-components";
 import Listing from "../components/Listing";
@@ -7,19 +7,18 @@ import FilterBox from "../components/FilterBox";
 import Layout from "../components/Layout";
 import ReactPaginate from "react-paginate";
 import { withRouter } from "react-router-dom";
-import { getSearchResults } from "../store/actions/search";
+import {
+  getSearchResults,
+  clearTags,
+  removeTag
+} from "../store/actions/search";
 import { RouteChildrenProps } from "react-router";
-interface IListing {
-  city: string;
-  company: string;
-  country: string;
-  description: string;
-  post_date: string;
-  state: string;
-  title: string;
-  tags: [];
-  url: string;
-}
+import { SearchState, ResultListing } from "../store/reducers/types";
+import { AppState } from "../store";
+import { SearchActionTypes } from "../store/actions/searchTypes";
+import { ThunkDispatch } from "redux-thunk";
+import { push } from "connected-react-router";
+const qs = require("query-string");
 
 const Content = styled.section`
   display: flex;
@@ -72,20 +71,31 @@ const Count = styled.span`
   font-size: 0.8em;
 `;
 
-const Results = (props: RouteChildrenProps) => {
-  const currState = useSelector((state: any) => state.search);
-  const dispatch = useDispatch();
+interface ResultProps {
+  removeTag: (p: string) => SearchActionTypes;
+  clearTags: () => SearchActionTypes;
+  getSearchResults: (p: any) => SearchActionTypes;
+  push: (query: string) => any;
+}
+
+const Results = (props: RouteChildrenProps & SearchState & ResultProps) => {
+  const [query, setQuery] = React.useState("");
 
   React.useEffect(() => {
-    dispatch(getSearchResults(props));
-    console.log(currState);
-  }, [dispatch, currState.searchInput, currState.tags]);
+    const queryString = props.router.location.search;
+    const queryParams = qs.parse(queryString);
+    const filledQuery = queryParams.q || query || "";
+    setQuery(filledQuery);
+    props.getSearchResults(filledQuery);
+  }, [props.router.location.search]);
 
   const results =
-    currState.status && currState.status === "success"
-      ? currState.results.data.map((res: IListing, i: number) => (
+    props.status && props.status === "success"
+      ? props.results.data.map((res: ResultListing, i: number) => (
           <Listing
-            key={i}
+            key={res.pk}
+            pk={res.pk}
+            source={res.url}
             city={res.city}
             company={res.company}
             country={res.country}
@@ -100,25 +110,40 @@ const Results = (props: RouteChildrenProps) => {
       : null;
 
   const currCount =
-    currState.status && currState.status === "success"
-      ? currState.results.count
-      : null;
+    props.status && props.status === "success" ? props.results.count : null;
   const currNumPages =
-    currState.status && currState.status === "success"
-      ? currState.results.numpages
-      : 0;
+    props.status && props.status === "success" ? props.results.numpages : 0;
 
   const pageChangeHandler = ({ selected }: { selected: number }) => {
     const pageNum = selected + 1;
-    const query = `?tags=${currState.searchInput}&page=${pageNum}`;
+    const query = `?tags=${props.searchInput}&page=${pageNum}`;
     console.log(query);
+  };
+
+  const fetchTagData = () => {
+    let currQuery = query;
+    if (props.tags.length > 0) {
+      currQuery = (currQuery ? currQuery + "," : "") + props.tags.join(",");
+    }
+    setQuery(currQuery);
+    props.push(`/jobs?q=${currQuery}`);
   };
 
   return (
     <Layout>
       {currCount ? (
         <Content>
-          <FilterBox />
+          <FilterBox
+            tags={props.tags}
+            searchInput={props.searchInput}
+            removeSelectedTag={(tag: string) => props.removeTag(tag)}
+          />
+          {props.tags.length > 0 ? (
+            <>
+              <span onClick={() => props.clearTags()}>Clear Tags</span>
+              <span onClick={fetchTagData}>Search</span>
+            </>
+          ) : null}
         </Content>
       ) : null}
       <Content>
@@ -137,4 +162,28 @@ const Results = (props: RouteChildrenProps) => {
   );
 };
 
-export default withRouter(Results);
+const mapStateToProps = (state: AppState, props: any): SearchState => {
+  return {
+    searchInput: state.search.searchInput,
+    tags: state.search.tags,
+    results: state.search.results,
+    status: state.search.status,
+    router: state.router
+  };
+};
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
+  return {
+    getSearchResults: (p: any) => dispatch(getSearchResults(p)),
+    clearTags: () => dispatch(clearTags()),
+    removeTag: (tag: string) => dispatch(removeTag(tag)),
+    push: (query: string) => dispatch(push(query))
+  };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Results as any)
+);

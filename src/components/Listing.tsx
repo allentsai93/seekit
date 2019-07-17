@@ -2,6 +2,9 @@ import * as React from "react";
 import styled from "styled-components";
 import Tag from "./Tag";
 import { addTag } from "../store/actions/search";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../store";
+import { ResultListing } from "../store/reducers/types";
 
 const Container = styled.div`
   display: flex;
@@ -74,6 +77,8 @@ interface IListing {
 }
 
 const Listing = ({
+  pk,
+  source,
   city,
   company,
   country,
@@ -83,7 +88,9 @@ const Listing = ({
   title,
   tags,
   url
-}: IListing) => {
+}: ResultListing) => {
+  const tagState = useSelector((state: AppState) => state.search.tags);
+  const dispatch = useDispatch();
   return (
     <Container>
       <Content>
@@ -103,7 +110,13 @@ const Listing = ({
       </Content>
       <Tags>
         {tags.map((tag, i) => (
-          <Tag key={i} tag={tag} clickHandler={addTag} fromFilterBox={false} />
+          <Tag
+            key={i}
+            tag={tag}
+            show={!tagState.includes(tag) ? true : false}
+            clickHandler={e => dispatch(addTag(e))}
+            fromFilterBox={false}
+          />
         ))}
       </Tags>
     </Container>

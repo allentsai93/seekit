@@ -1,8 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
 import { SearchActionTypes } from "../store/actions/searchTypes";
-import { AppState } from "../store";
 
 interface StyledTagProps {
   show?: boolean;
@@ -11,6 +9,7 @@ interface StyledTagProps {
 
 interface TagProps {
   tag: string;
+  show?: boolean;
   clickHandler: (tag: string) => SearchActionTypes;
   fromFilterBox: boolean;
 }
@@ -37,14 +36,13 @@ const StyledTag = styled.span<StyledTagProps>`
   box-sizing: border-box;
 `;
 
-const Tag = ({ tag, clickHandler, fromFilterBox }: TagProps) => {
-  const tagState = useSelector((state: AppState) => state.search.tags);
-  const dispatch = useDispatch();
-
+const Tag = ({ tag, show, clickHandler, fromFilterBox }: TagProps) => {
   return (
     <StyledTag
-      show={!fromFilterBox ? !tagState.includes(tag) : true}
-      onClick={() => dispatch(clickHandler(tag))}
+      show={!fromFilterBox ? show : true}
+      onClick={() => {
+        clickHandler(tag);
+      }}
       fullOpacity={fromFilterBox}
     >
       {tag}

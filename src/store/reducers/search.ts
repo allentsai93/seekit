@@ -4,7 +4,7 @@ const initialState: SearchState = {
   searchInput: "",
   tags: [],
   status: "",
-  results: {}
+  results: { data: [], count: 0, nextlink: "", prevlink: "", numpages: 0 }
 };
 
 const searchReducer = (state = initialState, action: any): SearchState => {

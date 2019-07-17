@@ -1,23 +1,21 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import { combineReducers } from "redux";
-import searchReducer from "./reducers/search";
-import visitedReducer from "./reducers/visited";
+import { createBrowserHistory } from "history";
+import { routerMiddleware } from "connected-react-router";
+import createRootReducer from "./reducers";
 
-const rootReducer = combineReducers({
-  search: searchReducer,
-  visited: visitedReducer
-});
-
+export const history = createBrowserHistory();
+export const rootReducer = createRootReducer(history);
 export type AppState = ReturnType<typeof rootReducer>;
 
-export default function configureStore() {
+export default function configureStore(preloadedState: any) {
   const composeEnhancer =
     (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
   const store = createStore(
     rootReducer,
-    composeEnhancer(applyMiddleware(thunk))
+    preloadedState,
+    composeEnhancer(applyMiddleware(routerMiddleware(history), thunk))
   );
 
   return store;

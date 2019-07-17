@@ -1,9 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import { AppState } from "../store";
-import { useSelector, useDispatch } from "react-redux";
-import { removeTag, clearTags } from "../store/actions/search";
 import Tag from "./Tag";
+import { SearchActionTypes } from "../store/actions/searchTypes";
 
 const Container = styled.div`
   width: 1300px;
@@ -32,27 +30,40 @@ const TagContainer = styled.div`
   margin: 5px 0;
 `;
 
-const FilterBox = () => {
-  const dispatch = useDispatch();
-  const state = useSelector((state: AppState) => state.search);
+interface FilterBoxProps {
+  tags: string[];
+  searchInput: string;
+  removeSelectedTag: (tag: string) => SearchActionTypes;
+}
 
-  const tagList = state.tags.map((tag, i) => (
-    <Tag key={i} clickHandler={removeTag} tag={tag} fromFilterBox={true} />
+const FilterBox = ({
+  tags,
+  searchInput,
+  removeSelectedTag
+}: FilterBoxProps) => {
+  const [selectedTags, setSelectedTags] = React.useState([""]);
+
+  React.useEffect(() => {
+    setSelectedTags(tags);
+  }, [tags]);
+
+  const tagList = selectedTags.map((tag, i) => (
+    <Tag
+      key={i}
+      clickHandler={removeSelectedTag}
+      tag={tag}
+      fromFilterBox={true}
+      show={true}
+    />
   ));
 
   return (
     <Container>
       <p>
-        Filter down your search{" "}
-        {state.searchInput ? `for ${state.searchInput}` : ""} by clicking on
-        tags
+        Filter down your search {searchInput ? `for ${searchInput}` : ""} by
+        clicking on tags
       </p>
       <TagContainer>{tagList}</TagContainer>
-      {tagList.length > 0 ? (
-        <>
-          <span onClick={() => dispatch(clearTags())}>Clear Tags</span>
-        </>
-      ) : null}
     </Container>
   );
 };

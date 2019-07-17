@@ -1,14 +1,16 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { RouteChildrenProps } from "react-router";
-import { setSearchInput, clearTags } from "../store/actions/search";
+import { clearTags } from "../store/actions/search";
 import searchIcon from "../assets/outline-search-24px.svg";
+import { push } from "connected-react-router";
+import { withRouter } from "react-router-dom";
+import { RouteChildrenProps } from "react-router";
 
 interface SearchBoxProps {
   className?: string;
 }
 
-const SearchBox = (props: SearchBoxProps) => {
+const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
   let input: any;
   const dispatch = useDispatch();
 
@@ -22,7 +24,7 @@ const SearchBox = (props: SearchBoxProps) => {
           }
           const query = input.value.split(" ").join(",");
           dispatch(clearTags());
-          dispatch(setSearchInput(query));
+          dispatch(push(`/jobs?q=${query}`));
         }}
       >
         <input ref={node => (input = node)} />
@@ -34,4 +36,4 @@ const SearchBox = (props: SearchBoxProps) => {
   );
 };
 
-export default SearchBox;
+export default withRouter(SearchBox);

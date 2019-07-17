@@ -2,21 +2,23 @@ export interface SearchState {
   searchInput: string;
   tags: string[];
   status: string;
-  results: {};
+  results: Result;
+  router?: any;
 }
 
 export interface VisitedState {
-  visited: Listing[];
+  visited: ResultListing[];
 }
 
 export interface Result {
-  data: Listing[];
+  data: ResultListing[];
   count: number;
   nextlink: string;
   prevlink: string;
+  numpages: number;
 }
 
-export interface Listing {
+export interface ResultListing {
   pk: number;
   title: string;
   description: string;

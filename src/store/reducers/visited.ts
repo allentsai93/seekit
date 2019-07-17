@@ -1,8 +1,8 @@
-import { Listing } from "./types";
+import { ResultListing } from "./types";
 
-const initialState: Listing[] = [];
+const initialState: ResultListing[] = [];
 
-const visitedReducer = (state = initialState, action: any): Listing[] => {
+const visitedReducer = (state = initialState, action: any): ResultListing[] => {
   switch (action.type) {
     case "ADD_VISITED":
       return [...state, action.payload];

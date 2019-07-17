@@ -1,8 +1,14 @@
-export const VISITED_LISTING = "VISITED_LISTING";
+export const ADD_VISITED = "ADD_VISITED";
+
+export const SHOW_VISITED = "SHOW_VISITED";
 
 interface VisitedListingAction {
-  type: typeof VISITED_LISTING;
+  type: typeof ADD_VISITED;
   payload: {};
 }
 
-export type VisitedActionTypes = VisitedListingAction;
+interface ShowVisitedAction {
+  type: typeof SHOW_VISITED;
+}
+
+export type VisitedActionTypes = VisitedListingAction | ShowVisitedAction;
