@@ -15,7 +15,7 @@ interface TagProps {
 }
 
 const StyledTag = styled.span<StyledTagProps>`
-  ${p => (p.show ? "display: flex;" : "display: none;")}
+  display: flex;
   height: auto;
   justify-content: center;
   align-items: center;
@@ -32,6 +32,7 @@ const StyledTag = styled.span<StyledTagProps>`
   &:hover {
     opacity: 1;
   }
+  ${p => (!p.show ? "cursor: inherit; opacity: 1; border-color: #ff3085;" : "")}
   overflow: hidden;
   box-sizing: border-box;
 `;

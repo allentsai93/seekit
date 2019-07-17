@@ -11,6 +11,7 @@ import {
   CLEAR_TAGS,
   SearchActionTypes
 } from "./searchTypes";
+import { getParsedUrlQuery, parseQueryToObj } from "../../util";
 
 export const addTag = (tag: string): SearchActionTypes => ({
   type: ADD_TAG,
@@ -50,25 +51,32 @@ export const invalidSearch = (): SearchActionTypes => {
   };
 };
 
-export const getSearchResults = (
-  query: string
-): ThunkAction<void, AppState, null, Action<string>> => {
+export const getSearchResults = (): ThunkAction<
+  void,
+  AppState,
+  null,
+  Action<string>
+> => {
   return async (dispatch, getState) => {
-    // const { search: currentState } = getState();
+    const { router: currentRoute } = getState();
+    const queryString = currentRoute.location.search;
+    const queryParams: { [index: string]: any } = parseQueryToObj(queryString);
+    let { tags = "" } = queryParams;
 
-    // if (currentState.tags.length > 0) {
-    //   query +=
-    //     currentState.tags.join(",") +
-    //     (currentState.searchInput ? "," + currentState.searchInput : "");
-    // }
+    if (tags) {
+      const allTags = tags.split(",");
+      allTags.forEach((tag: string) => {
+        dispatch(addTag(tag));
+      });
+    }
 
     dispatch(requestSearchResults());
     const response = await fetch(
       `${
         process.env.NODE_ENV === "production"
-          ? "https://hbtojv86ij.execute-api.us-east-1.amazonaws.com/dev/api/jobs/?tags="
-          : "http://localhost:8000/api/jobs/?tags="
-      }${query}`
+          ? "https://hbtojv86ij.execute-api.us-east-1.amazonaws.com/dev/api/jobs/"
+          : "http://localhost:8000/api/jobs/"
+      }${getParsedUrlQuery(queryParams)}`
     );
     const data = await response.json();
     dispatch(receivedSearchResults(data));

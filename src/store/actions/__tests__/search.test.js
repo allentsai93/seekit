@@ -72,6 +72,7 @@ describe("asynchronous actions", () => {
     });
 
     const expectedActions = [
+      { type: types.ADD_TAG, payload: "test" },
       { type: types.FETCH_SEARCH_REQUEST },
       {
         type: types.FETCH_SEARCH_SUCCESS,
@@ -80,10 +81,15 @@ describe("asynchronous actions", () => {
     ];
 
     const store = mockStore({
-      search: { searchInput: "test", results: [], tags: [] }
+      search: {
+        searchInput: "test",
+        results: [],
+        tags: []
+      },
+      router: { location: { search: "?tags=test" } }
     });
 
-    await store.dispatch(actions.getSearchResults("test"));
+    await store.dispatch(actions.getSearchResults());
     return expect(store.getActions()).toEqual(expectedActions);
   });
 });

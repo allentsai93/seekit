@@ -10,6 +10,12 @@ const initialState: SearchState = {
 const searchReducer = (state = initialState, action: any): SearchState => {
   switch (action.type) {
     case "ADD_TAG":
+      if (state.tags.includes(action.payload)) {
+        return {
+          ...state,
+          tags: [...state.tags]
+        };
+      }
       return {
         ...state,
         tags: [...state.tags, action.payload]

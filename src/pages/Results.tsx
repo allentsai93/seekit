@@ -10,7 +10,8 @@ import { withRouter } from "react-router-dom";
 import {
   getSearchResults,
   clearTags,
-  removeTag
+  removeTag,
+  addTag
 } from "../store/actions/search";
 import { RouteChildrenProps } from "react-router";
 import { SearchState, ResultListing } from "../store/reducers/types";
@@ -18,8 +19,7 @@ import { AppState } from "../store";
 import { SearchActionTypes } from "../store/actions/searchTypes";
 import { ThunkDispatch } from "redux-thunk";
 import { push } from "connected-react-router";
-const qs = require("query-string");
-
+import { getParsedUrlQuery, parseQueryToObj } from "../util";
 const Content = styled.section`
   display: flex;
   flex-flow: column wrap;
@@ -73,20 +73,15 @@ const Count = styled.span`
 
 interface ResultProps {
   removeTag: (p: string) => SearchActionTypes;
+  addTag: (tag: string) => SearchActionTypes;
   clearTags: () => SearchActionTypes;
-  getSearchResults: (p: any) => SearchActionTypes;
-  push: (query: string) => any;
+  getSearchResults: () => SearchActionTypes;
+  push: (query: any) => any;
 }
 
 const Results = (props: RouteChildrenProps & SearchState & ResultProps) => {
-  const [query, setQuery] = React.useState("");
-
   React.useEffect(() => {
-    const queryString = props.router.location.search;
-    const queryParams = qs.parse(queryString);
-    const filledQuery = queryParams.q || query || "";
-    setQuery(filledQuery);
-    props.getSearchResults(filledQuery);
+    props.getSearchResults();
   }, [props.router.location.search]);
 
   const results =
@@ -116,17 +111,26 @@ const Results = (props: RouteChildrenProps & SearchState & ResultProps) => {
 
   const pageChangeHandler = ({ selected }: { selected: number }) => {
     const pageNum = selected + 1;
-    const query = `?tags=${props.searchInput}&page=${pageNum}`;
-    console.log(query);
+    const queryString = props.router.location.search;
+    let queryParams: { [index: string]: any } = parseQueryToObj(queryString);
+    queryParams.page = pageNum;
+
+    props.push(props.router.location.pathname + getParsedUrlQuery(queryParams));
   };
 
   const fetchTagData = () => {
-    let currQuery = query;
+    const queryString = props.router.location.search;
+    let queryParams: { [index: string]: any } = parseQueryToObj(queryString);
+
     if (props.tags.length > 0) {
-      currQuery = (currQuery ? currQuery + "," : "") + props.tags.join(",");
+      queryParams.tags = props.tags.join(",");
     }
-    setQuery(currQuery);
-    props.push(`/jobs?q=${currQuery}`);
+
+    if (queryParams.page) {
+      delete queryParams.page;
+    }
+
+    props.push(props.router.location.pathname + getParsedUrlQuery(queryParams));
   };
 
   return (
@@ -174,10 +178,11 @@ const mapStateToProps = (state: AppState, props: any): SearchState => {
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
   return {
-    getSearchResults: (p: any) => dispatch(getSearchResults(p)),
+    getSearchResults: () => dispatch(getSearchResults()),
     clearTags: () => dispatch(clearTags()),
     removeTag: (tag: string) => dispatch(removeTag(tag)),
-    push: (query: string) => dispatch(push(query))
+    push: (query: string) => dispatch(push(query)),
+    addTag: (tag: string) => dispatch(addTag(tag))
   };
 };
 

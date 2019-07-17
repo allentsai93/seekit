@@ -24,7 +24,7 @@ const SearchBox = (props: RouteChildrenProps & SearchBoxProps) => {
           }
           const query = input.value.split(" ").join(",");
           dispatch(clearTags());
-          dispatch(push(`/jobs?q=${query}`));
+          dispatch(push(`/jobs?tags=${query}`));
         }}
       >
         <input ref={node => (input = node)} />
